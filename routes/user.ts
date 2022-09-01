@@ -1,10 +1,21 @@
-const express = require("express");
-
+import express, { Request, Response } from "express";
+import { Schema } from "mongoose";
 //controllers
-import { user } from "../controllers/user";
+import { user as userController } from "../controllers/user";
+import { IUser } from "../models/user";
 
-const router = express.Router();
+const userModel = require("../models/user");
 
-router.get("/", user);
+const userRouter = express.Router();
 
-export default router;
+userRouter.post("/user", async (request: Request, response: Response) => {
+  const res = await userController.addUser(request.body);
+  response.send(res);
+});
+
+userRouter.get("/user", async (request, response) => {
+  const res = await userController.getUsers();
+  response.send(res);
+});
+
+export default userRouter;

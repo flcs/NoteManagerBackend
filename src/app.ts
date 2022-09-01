@@ -1,11 +1,28 @@
 require("dotenv").config();
-const express = require("express");
+import express from "express";
 const app = express();
 
-//routes
-import user from "../routes/user";
+import mongoose from "mongoose";
+import userRouter from "../routes/user";
 
-app.use(user);
+import bp from "body-parser";
+
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
+
+app.use(userRouter);
+
+// db connection
+const mongoDBconnection: string | undefined = process.env.MONGO_DB_URL;
+
+if (mongoDBconnection) {
+  mongoose.connect(mongoDBconnection);
+  const db = mongoose.connection;
+  db.on("error", console.error.bind(console, "connection error: "));
+  db.once("open", function () {
+    console.log("MongoDB Connected successfully");
+  });
+}
 
 app.listen(3001, () => {
   console.log("Alive on:", 3001);
