@@ -4,6 +4,7 @@ const app = express();
 
 import mongoose from "mongoose";
 import userRouter from "../routes/user";
+import boardRouter from "../routes/board";
 
 import bp from "body-parser";
 
@@ -11,6 +12,7 @@ app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
 app.use(userRouter);
+app.use(boardRouter);
 
 // db connection
 const mongoDBconnection: string | undefined = process.env.MONGO_DB_URL;

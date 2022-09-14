@@ -4,17 +4,25 @@ import { IUser } from "../models/user";
 const userModel = require("../models/user");
 
 const user = {
-  addUser: async (newUser: IUser) => {
+  createUser: async (newUser: IUser) => {
     const user = new userModel(newUser);
     try {
-      console.log(user);
       await user.save();
       return user;
     } catch (error) {
       return error;
     }
   },
-  getUsers: async () => {
+  readOneUser: async (req: Request) => {
+    try {
+      console.log(req.body._id);
+      const user = await userModel.findById({ _id: req.body._id });
+      return user;
+    } catch (error) {
+      return error;
+    }
+  },
+  readAllUsers: async () => {
     try {
       const users = await userModel.find({});
       return users;

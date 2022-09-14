@@ -1,18 +1,22 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IBoard } from "./board";
-// NOTE
 export interface INote extends Document {
-  id: String;
+  _id?: Schema.Types.ObjectId;
   title: String;
   description: String;
-  board: IBoard["_id"];
+  board: Schema.Types.ObjectId;
 }
 
-const noteSchema: Schema = new Schema({
-  id: { type: Schema.Types.ObjectId, required: true, unique: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  board: { type: Schema.Types.ObjectId, required: true },
-});
+const noteSchema: Schema = new Schema(
+  {
+    // _id: { type: Schema.Types.ObjectId, required: true, unique: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    board: [{ type: Schema.Types.ObjectId, ref: "board", required: true }],
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model<INote>("note", noteSchema);
+const note = mongoose.model<INote>("note", noteSchema);
+
+module.exports = note;
