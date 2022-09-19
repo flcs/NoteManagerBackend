@@ -5,7 +5,7 @@ export interface IUser extends Document {
   _id?: Schema.Types.ObjectId;
   name: String;
   email: String;
-  password: String;
+  passwordHash: String;
   adminBoards?: IBoard["_id"][];
   viwerBoards?: IBoard["_id"][];
 }
@@ -15,7 +15,7 @@ const userSchema: Schema = new Schema(
     // _id: { type: Schema.Types.ObjectId, unique: true, auto: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    passwordHash: { type: String, required: true },
     adminBoards: [
       { type: Schema.Types.ObjectId, ref: "board", required: false },
     ],
