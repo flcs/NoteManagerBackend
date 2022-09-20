@@ -3,8 +3,8 @@ import express from "express";
 const app = express();
 
 import mongoose from "mongoose";
-import userRouter from "../routes/user";
-import boardRouter from "../routes/board";
+import userRouter from "../routes/public/user";
+import boardRouter from "../routes/private/board";
 
 import bp from "body-parser";
 
