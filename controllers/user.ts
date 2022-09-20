@@ -10,19 +10,6 @@ const user = {
     const { name, email, password } = request.body;
     console.log(name, email, password);
 
-    // validations
-    if (!name) {
-      return response.status(422).json({ msg: "O nome é obrigatório!" });
-    }
-
-    if (!email) {
-      return response.status(422).json({ msg: "O email é obrigatório!" });
-    }
-
-    if (!password) {
-      return response.status(422).json({ msg: "A senha é obrigatória!" });
-    }
-
     // check if user exists
     const userExists = await userModel.findOne({ email: email });
 
@@ -88,13 +75,11 @@ const user = {
         secret
       );
 
-      response
-        .status(200)
-        .json({
-          msg: "Autenticação realizada com sucesso!",
-          token,
-          _id: user._id,
-        });
+      response.status(200).json({
+        msg: "Autenticação realizada com sucesso!",
+        token,
+        _id: user._id,
+      });
     } catch (error) {
       response.status(500).json({ msg: error });
     }

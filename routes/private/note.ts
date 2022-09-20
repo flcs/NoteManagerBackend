@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { Schema } from "mongoose";
 
 import { note as noteController } from "../../controllers/note";
-import { checkToken } from "../../helpers/checkToken";
+import { checkToken } from "../../validations/checkToken";
 
 const boardRouter = express.Router();
 
