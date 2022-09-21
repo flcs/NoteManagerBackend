@@ -3,20 +3,33 @@ import { IBoard } from "../models/board";
 import { IUser } from "../models/user";
 
 const boardModel = require("../models/board");
+const userModel = require("../models/user");
 
 const board = {
   createBoard: async (request: Request, response: Response) => {
     try {
       const admin = request.body.admin;
 
-      const board = new boardModel(admin);
+      //create board
+      const board = new boardModel({ admin });
       const newBoard = await board.save();
+
+      //update user
+      const user = await userModel.findOneAndUpdate(
+        { _id: admin },
+        { $addToSet: { adminBoards: board._id } },
+        {
+          new: true,
+        }
+      );
+
       response
         .status(201)
         .json({ msg: "Quadro criado com sucesso!", newBoard });
 
       return board;
     } catch (error) {
+      // console.log(error);
       response.status(500).json({ msg: "Falha ao criar!", error });
     }
   },
@@ -47,40 +60,41 @@ const board = {
   deleteBoard: async (request: Request, response: Response) => {
     try {
       const _id = request.body._id;
+      //delete board
       const board = await boardModel.findByIdAndRemove({ _id });
+      //update user
+      const user = await userModel.findOneAndUpdate(
+        { _id: board.admin },
+        { $pull: { adminBoards: board._id } },
+        {
+          new: true,
+        }
+      );
+      console.log(user);
+
       response.status(201).json({ msg: "Quadro excluído com sucesso!", board });
     } catch (error) {
       response.status(500).json({ msg: "Falha ao excluir!", error });
     }
   },
 
-  // PAREI AQUI, CONTINUAR IMPLEMENTAÇÃO DE ADICIONAR VISUALIZADOR AO QUADRO: primeiramente verificar sua existencia e depois
-  //utilizar o $push como visto:
-  // https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
   addViwer: async (request: Request, response: Response) => {
     try {
       const { _id, viwer } = request.body;
-      console.log(_id, viwer);
 
       //update board
-      const updatedViwerArray = oldBoard.viwer;
       const board = await boardModel.findOneAndUpdate(
         { _id },
-        { viwer: updatedViwerArray },
+        { $addToSet: { viwer: viwer } },
         {
           new: true,
         }
       );
 
       //update user
-      const userModel = require("../models/board");
-      const oldUser: IUser = await userModel.findById({ _id: viwer });
-      console.log(oldUser);
-      oldUser.viwerBoards?.push(viwer);
-      const updatedViwerBoardsArray = oldUser.viwerBoards;
       const user = await userModel.findOneAndUpdate(
-        { _id: viwer },
-        { viwerBoards: updatedViwerBoardsArray },
+        { _id },
+        { $addToSet: { viwerBoards: _id } },
         {
           new: true,
         }
@@ -89,6 +103,30 @@ const board = {
       response
         .status(201)
         .json({ msg: "Visualizador adicionado com sucesso!", board });
+    } catch (error) {
+      response.status(500).json({ msg: "Falha ao adicionar!", error });
+    }
+  },
+
+  removeViwer: async (request: Request, response: Response) => {
+    try {
+      const { _id, viwer } = request.body;
+
+      //remove board
+      const board = await boardModel.findByIdAndRemove({ _id });
+
+      //update user
+      const user = await userModel.findOneAndUpdate(
+        { _id },
+        { $pull: { viwerBoards: viwer } },
+        {
+          new: true,
+        }
+      );
+
+      response
+        .status(201)
+        .json({ msg: "Visualizador removido com sucesso!", board });
     } catch (error) {
       response.status(500).json({ msg: "Falha ao adicionar!", error });
     }

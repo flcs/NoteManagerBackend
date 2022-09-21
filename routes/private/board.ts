@@ -39,8 +39,7 @@ boardRouter.delete(
   checkToken,
   checkBoardBody.boardId,
   async (request: Request, response: Response) => {
-    const res = await boardController.deleteBoard(request, response);
-    response.send(res);
+    await boardController.deleteBoard(request, response);
   }
 );
 
@@ -49,8 +48,16 @@ boardRouter.put(
   checkToken,
   checkBoardBody.addViwer,
   async (request: Request, response: Response) => {
-    const res = await boardController.addViwer(request, response);
-    response.send(res);
+    await boardController.addViwer(request, response);
+  }
+);
+
+boardRouter.delete(
+  "/board/delviwer",
+  checkToken,
+  checkBoardBody.addViwer,
+  async (request: Request, response: Response) => {
+    await boardController.removeViwer(request, response);
   }
 );
 
