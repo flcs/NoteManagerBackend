@@ -78,7 +78,10 @@ const user = {
       response.status(200).json({
         msg: "Autenticação realizada com sucesso!",
         token,
-        _id: user._id,
+        user: {
+          _id: user._id,
+          name: user.name,
+        },
       });
     } catch (error) {
       response.status(500).json({ msg: error });

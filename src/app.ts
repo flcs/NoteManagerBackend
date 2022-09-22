@@ -2,6 +2,9 @@ require("dotenv").config();
 import express from "express";
 const app = express();
 
+let cors = require("cors");
+app.use(cors());
+
 import mongoose from "mongoose";
 import userRouter from "../routes/public/user";
 import boardRouter from "../routes/private/board";
