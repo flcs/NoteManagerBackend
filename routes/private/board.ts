@@ -46,7 +46,7 @@ boardRouter.post(
 boardRouter.delete(
   "/board",
   checkToken,
-  checkBoardBody.boardId,
+  checkBoardBody.delete,
   async (request: Request, response: Response) => {
     await boardController.deleteBoard(request, response);
   }

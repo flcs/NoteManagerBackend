@@ -70,7 +70,7 @@ const board = {
 
   deleteBoard: async (request: Request, response: Response) => {
     try {
-      const _id = request.body._id;
+      const _id = request.body.data._id;
       //delete board
       const board = await boardModel.findByIdAndRemove({ _id });
       //update user

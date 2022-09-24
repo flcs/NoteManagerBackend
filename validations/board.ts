@@ -31,6 +31,17 @@ export const checkBoardBody = {
       next();
     }
   },
+  delete: (request: Request, response: Response, next: any) => {
+    // console.log(request);
+    const { _id } = request.body.data;
+    if (!_id) {
+      return response
+        .status(422)
+        .json({ msg: "O id do quadro é obrigatório!" });
+    } else {
+      next();
+    }
+  },
 
   addViwer: (request: Request, response: Response, next: any) => {
     const { _id, viwer } = request.body;
