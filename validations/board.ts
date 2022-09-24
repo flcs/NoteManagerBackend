@@ -11,6 +11,16 @@ export const checkBoardBody = {
       next();
     }
   },
+  viwerId: (request: Request, response: Response, next: any) => {
+    const { viwer } = request.body;
+    if (!viwer) {
+      return response
+        .status(422)
+        .json({ msg: "O id do usuário é obrigatório!" });
+    } else {
+      next();
+    }
+  },
   boardId: (request: Request, response: Response, next: any) => {
     const { _id } = request.body;
     if (!_id) {

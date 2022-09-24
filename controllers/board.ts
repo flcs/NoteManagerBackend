@@ -45,10 +45,21 @@ const board = {
       response.status(500).json({ msg: "Falha na procura!", error });
     }
   },
-  readAllBoards: async (request: Request, response: Response) => {
+  readAllAdminBoards: async (request: Request, response: Response) => {
     try {
       const { admin } = request.body;
       const boards = await boardModel.find({ admin });
+      response
+        .status(201)
+        .json({ msg: "Quadros encontrados com sucesso!", boards });
+    } catch (error) {
+      response.status(500).json({ msg: "Falha na procura!", error });
+    }
+  },
+  readAllViwerBoards: async (request: Request, response: Response) => {
+    try {
+      const { viwer } = request.body;
+      const boards = await boardModel.find({ viwer });
       response
         .status(201)
         .json({ msg: "Quadros encontrados com sucesso!", boards });

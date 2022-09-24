@@ -25,12 +25,21 @@ boardRouter.get(
   }
 );
 
-boardRouter.get(
-  "/boards",
+boardRouter.post(
+  "/adminboards",
   checkToken,
   checkBoardBody.adminId,
   async (request: Request, response: Response) => {
-    await boardController.readAllBoards(request, response);
+    await boardController.readAllAdminBoards(request, response);
+  }
+);
+
+boardRouter.post(
+  "/viwerboards",
+  checkToken,
+  checkBoardBody.viwerId,
+  async (request: Request, response: Response) => {
+    await boardController.readAllViwerBoards(request, response);
   }
 );
 
