@@ -3,48 +3,44 @@ import { Schema } from "mongoose";
 
 import { note as noteController } from "../../controllers/note";
 import { checkToken } from "../../validations/checkToken";
+import { checkNoteBody } from "../../validations/note";
 
-const boardRouter = express.Router();
+const noteRouter = express.Router();
 
-boardRouter.post(
+noteRouter.post(
   "/note",
   checkToken,
+  checkNoteBody.createNote,
   async (request: Request, response: Response) => {
-    const res = await noteController.createBoard(request.body);
-    response.send(res);
+    await noteController.createNote(request, response);
   }
 );
 
-boardRouter.get(
-  "/note",
-  checkToken,
-  async (request: Request, response: Response) => {
-    const res = await noteController.readOneBoard(request);
-    response.send(res);
-  }
-);
-
-boardRouter.get(
+noteRouter.post(
   "/notes",
   checkToken,
+  checkNoteBody.readAll,
   async (request: Request, response: Response) => {
-    const res = await noteController.readAllBoards();
-    response.send(res);
+    await noteController.readAll(request, response);
   }
 );
 
-boardRouter.delete("/note", async (request: Request, response: Response) => {
-  const res = await noteController.deleteBoard(request);
-  response.send(res);
-});
-
-boardRouter.put(
+noteRouter.put(
   "/note",
   checkToken,
+  checkNoteBody.updateOne,
   async (request: Request, response: Response) => {
-    const res = await noteController.updateBoard(request);
-    response.send(res);
+    await noteController.updateOne(request, response);
   }
 );
 
-export default boardRouter;
+noteRouter.delete(
+  "/note",
+  checkToken,
+  checkNoteBody.delete,
+  async (request: Request, response: Response) => {
+    await noteController.delete(request, response);
+  }
+);
+
+export default noteRouter;

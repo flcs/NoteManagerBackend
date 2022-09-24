@@ -12,7 +12,7 @@ const noteSchema: Schema = new Schema(
     // _id: { type: Schema.Types.ObjectId, required: true, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    board: [{ type: Schema.Types.ObjectId, ref: "board", required: true }],
+    board: { type: Schema.Types.ObjectId, ref: "board", required: true },
   },
   { timestamps: true }
 );

@@ -1,50 +1,69 @@
 import { Request, Response } from "express";
 import { IBoard } from "../models/board";
 
-const noteModel = require("../models/board");
+const noteModel = require("../models/note");
+const boardModel = require("../models/board");
 
 const note = {
-  createBoard: async (newNote: IBoard) => {
-    console.log(newNote);
-    const note = new noteModel(newNote);
+  createNote: async (request: Request, response: Response) => {
     try {
-      await note.save();
-      return note;
+      const { title, description, board } = request.body;
+      console.log(title, description, board);
+      //create Note
+      const note = new noteModel({ title, description, board });
+      const newNote = await note.save();
+
+      //update board (add note to board)
+      const newBoard = await boardModel.findOneAndUpdate(
+        { _id: board },
+        { $addToSet: { notes: newNote._id } },
+        {
+          new: true,
+        }
+      );
+
+      response.status(201).json({ msg: "Nota criada com sucesso!", newNote });
     } catch (error) {
-      return error;
+      // console.log(error);
+      response.status(500).json({ msg: "Falha ao criar!", error });
     }
   },
-  readOneBoard: async (req: Request) => {
+  readAll: async (request: Request, response: Response) => {
     try {
-      const note = await noteModel.findById({ _id: req.body.id });
-      return note;
+      const { board } = request.body;
+
+      const notes = await noteModel.find({ board });
+      response
+        .status(201)
+        .json({ msg: "Notas encontradas com sucesso!", notes });
     } catch (error) {
-      return error;
+      response.status(500).json({ msg: "Falha na procura!", error });
     }
   },
-  readAllBoards: async () => {
+  updateOne: async (request: Request, response: Response) => {
     try {
-      const note = await noteModel.find({});
-      return note;
+      const { _id, title, description } = request.body;
+
+      const note = await noteModel.findOneAndUpdate(
+        { _id },
+        { title, description },
+        {
+          new: true,
+        }
+      );
+
+      response.status(201).json({ msg: "Nota atualizada com sucesso!", note });
     } catch (error) {
-      return error;
+      response.status(500).json({ msg: "Falha na procura!", error });
     }
   },
-  deleteBoard: async (req: Request) => {
+  delete: async (request: Request, response: Response) => {
     try {
-      const note = await noteModel.findByIdAndRemove({ _id: req.body._id });
-      return note;
+      const { _id } = request.body;
+      const note = await noteModel.findByIdAndRemove({ _id });
+      response.status(201).json({ msg: "Nota excluída com sucesso!", note });
     } catch (error) {
-      return error;
-    }
-  },
-  updateBoard: async (req: Request) => {
-    try {
-      console.log(req.body);
-      const note = await noteModel.findOneAndUpdate({ _id: req.body._id });
-      return note;
-    } catch (error) {
-      return error;
+      response.status(500).json({ msg: "Falha na procura!", error });
     }
   },
 };
