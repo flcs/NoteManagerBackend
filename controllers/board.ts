@@ -125,14 +125,20 @@ const board = {
 
   removeViwer: async (request: Request, response: Response) => {
     try {
-      const { _id, viwer } = request.body;
+      const { _id, viwer } = request.body.data;
 
-      //remove board
-      const board = await boardModel.findByIdAndRemove({ _id });
+      //update board
+      const board = await boardModel.findOneAndUpdate(
+        { _id },
+        { $pull: { viwer: viwer } },
+        {
+          new: true,
+        }
+      );
 
       //update user
       const user = await userModel.findOneAndUpdate(
-        { _id },
+        { viwerBoards: viwer },
         { $pull: { viwerBoards: viwer } },
         {
           new: true,

@@ -57,4 +57,19 @@ export const checkBoardBody = {
       next();
     }
   },
+
+  deleteViwer: (request: Request, response: Response, next: any) => {
+    const { _id, viwer } = request.body.data;
+    if (!_id) {
+      return response
+        .status(422)
+        .json({ msg: "O id do quadro é obrigatório!" });
+    } else if (!viwer) {
+      return response
+        .status(422)
+        .json({ msg: "O id do usuário visualizador é obrigatório!" });
+    } else {
+      next();
+    }
+  },
 };

@@ -64,7 +64,7 @@ boardRouter.put(
 boardRouter.delete(
   "/board/delviwer",
   checkToken,
-  checkBoardBody.addViwer,
+  checkBoardBody.deleteViwer,
   async (request: Request, response: Response) => {
     await boardController.removeViwer(request, response);
   }
