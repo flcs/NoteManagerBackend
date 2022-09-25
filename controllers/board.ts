@@ -4,6 +4,7 @@ import { IUser } from "../models/user";
 
 const boardModel = require("../models/board");
 const userModel = require("../models/user");
+const noteModel = require("../models/note");
 
 const board = {
   createBoard: async (request: Request, response: Response) => {
@@ -74,14 +75,17 @@ const board = {
       //delete board
       const board = await boardModel.findByIdAndRemove({ _id });
       //update user
-      const user = await userModel.findOneAndUpdate(
+      await userModel.findOneAndUpdate(
         { _id: board.admin },
         { $pull: { adminBoards: board._id } },
         {
           new: true,
         }
       );
-      console.log(user);
+
+      //update note
+      const note = await noteModel.deleteMany({ board: _id });
+      // console.log(note);
 
       response.status(201).json({ msg: "Quadro excluído com sucesso!", board });
     } catch (error) {
