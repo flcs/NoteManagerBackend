@@ -59,7 +59,7 @@ const note = {
   },
   delete: async (request: Request, response: Response) => {
     try {
-      const { _id } = request.body;
+      const { _id } = request.body.data;
       const note = await noteModel.findByIdAndRemove({ _id });
       response.status(201).json({ msg: "Nota excluída com sucesso!", note });
     } catch (error) {

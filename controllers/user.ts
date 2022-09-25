@@ -8,7 +8,7 @@ const userModel = require("../models/user");
 const user = {
   createUser: async (request: Request, response: Response) => {
     const { name, email, password } = request.body;
-    console.log(name, email, password);
+    // console.log(name, email, password);
 
     // check if user exists
     const userExists = await userModel.findOne({ email: email });

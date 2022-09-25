@@ -39,7 +39,7 @@ export const checkNoteBody = {
     }
   },
   delete: (request: Request, response: Response, next: any) => {
-    const { _id } = request.body;
+    const { _id } = request.body.data;
     if (!_id) {
       return response.status(422).json({ msg: "O id é obrigatório!" });
     } else {
