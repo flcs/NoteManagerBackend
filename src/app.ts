@@ -6,9 +6,9 @@ let cors = require("cors");
 app.use(cors());
 
 import mongoose from "mongoose";
-import userRouter from "../routes/public/user";
-import boardRouter from "../routes/private/board";
-import noteRouter from "../routes/private/note";
+import userRouter from "./routes/public/user";
+import boardRouter from "./routes/private/board";
+import noteRouter from "./routes/private/note";
 
 import bp from "body-parser";
 
