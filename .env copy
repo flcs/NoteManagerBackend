@@ -1,0 +1,2 @@
+MONGO_DB_URL="mongodb+srv://admin:<SENHA>@cluster0.c0lb9.mongodb.net/test"
+SECRET=<CRIEME>

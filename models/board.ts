@@ -13,7 +13,7 @@ const boardSchema: Schema = new Schema(
   {
     // id: { type: Schema.Types.ObjectId, required: true, unique: true },
     notes: [{ type: Schema.Types.ObjectId, ref: "note", required: false }],
-    admin: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    admin:  { type: Schema.Types.ObjectId, ref: "user", required: true  },
     viwer: [{ type: Schema.Types.ObjectId, ref: "user", required: false }],
   },
   { timestamps: true }
